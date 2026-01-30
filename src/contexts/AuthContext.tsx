@@ -111,7 +111,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // Insert profile based on role
       let profileError = null;
-      
+
       if (userRole === "student") {
         const { error } = await supabase
           .from("student_profiles")
@@ -121,6 +121,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             full_name: profileData.fullName,
             branch: profileData.branch,
             year_of_graduation: profileData.yearOfGraduation,
+            cgpa: profileData.cgpa,
           });
         profileError = error;
       } else if (userRole === "company") {

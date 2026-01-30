@@ -31,6 +31,7 @@ const Auth = () => {
   const [companyName, setCompanyName] = useState("");
   const [branch, setBranch] = useState("");
   const [yearOfGraduation, setYearOfGraduation] = useState("");
+  const [cgpa, setCgpa] = useState("");
   const [industry, setIndustry] = useState("");
   const [department, setDepartment] = useState("");
 
@@ -62,7 +63,7 @@ const Auth = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (signupPassword !== confirmPassword) {
       toast({
         title: "Passwords don't match",
@@ -84,12 +85,13 @@ const Auth = () => {
     setIsLoading(true);
 
     let profileData: any = {};
-    
+
     if (selectedRole === "student") {
       profileData = {
         fullName,
         branch,
         yearOfGraduation: parseInt(yearOfGraduation),
+        cgpa: cgpa ? parseFloat(cgpa) : null,
       };
     } else if (selectedRole === "company") {
       profileData = {
@@ -141,8 +143,8 @@ const Auth = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md animate-fade-in">
-        <Link 
-          to="/" 
+        <Link
+          to="/"
           className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-8"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -206,7 +208,7 @@ const Auth = () => {
                 <form onSubmit={handleSignup} className="space-y-4">
                   {/* Role Selection */}
                   <div className="space-y-2">
-                    
+
                     <div className="grid grid-cols-3 gap-2">
                       {(["student", "company", "placement_head"] as AppRole[]).map((role) => {
                         const Icon = roleIcons[role];
@@ -215,11 +217,10 @@ const Auth = () => {
                             key={role}
                             type="button"
                             onClick={() => setSelectedRole(role)}
-                            className={`flex flex-col items-center gap-1 p-3 rounded-lg border transition-all ${
-                              selectedRole === role
-                                ? "border-accent bg-accent/10 text-accent"
-                                : "border-border hover:border-accent/50"
-                            }`}
+                            className={`flex flex-col items-center gap-1 p-3 rounded-lg border transition-all ${selectedRole === role
+                              ? "border-accent bg-accent/10 text-accent"
+                              : "border-border hover:border-accent/50"
+                              }`}
                           >
                             <Icon className="h-5 w-5" />
                             <span className="text-xs font-medium">{roleLabels[role]}</span>
@@ -267,7 +268,7 @@ const Auth = () => {
                               <SelectItem value="ME">Mechanical</SelectItem>
                               <SelectItem value="CE">Civil</SelectItem>
                               <SelectItem value="EE">Electrical</SelectItem>
-                              <SelectItem value="IT">Information Tech</SelectItem>
+                              <SelectItem value="IT">Information Technology</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -285,6 +286,19 @@ const Auth = () => {
                             </SelectContent>
                           </Select>
                         </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="cgpa">CGPA (Optional)</Label>
+                        <Input
+                          id="cgpa"
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          max="10"
+                          placeholder="8.5"
+                          value={cgpa}
+                          onChange={(e) => setCgpa(e.target.value)}
+                        />
                       </div>
                     </>
                   )}
